@@ -225,8 +225,6 @@ fig, ax = plt.subplots()
 plt.plot(result)
 ```
 
-![alt_text](docs/output_4_1.jpg)
-
 
 **2 系统描述：**
 
