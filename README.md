@@ -57,29 +57,29 @@ P(B|A) \* P(A) = P(AB)
   
   其中 $\phi$ 和 $\zeta$ 都是阶跃函数，$\phi$为常数阶跃，$\zeta$为线性阶跃：
   
-  $\phi_-^\theta = 
+  $$\phi_-^\theta = 
   \begin{cases}
     1 &\quad \text{if } t \text{ <= } \theta \\ 
     0 &\quad \text{else}
-  \end{cases}$
+  \end{cases}$$
   
-  $\phi_+^\theta = 
+  $$\phi_+^\theta = 
   \begin{cases}
     1 &\quad \text{if } t \text{ >= } \theta \\ 
     0 &\quad \text{else}
-  \end{cases}$
+  \end{cases}$$
   
-  $\zeta_-^\theta = 
+  $$\zeta_-^\theta = 
   \begin{cases} 
     \theta - t  &\quad \text{if } t \text{ <= } \theta \\ 
     0 &\quad \text{else}
-  \end{cases}$
+  \end{cases}$$
   
-  $\zeta_+^\theta = 
+  $$\zeta_+^\theta = 
   \begin{cases}
     \theta -t &\quad \text{if } t \text{ >= } \theta \\
     0 &\quad \text{else}
-  \end{cases}$
+  \end{cases}$$
   
   $\xi(t)$ 为在平均值左右正态分布的随机浮动，分布的标准偏差也在拐点测试的范围内，i.e.假设数据浮动的幅度也有可能出现阶跃。所以定义随机浮动的标准偏差： $STD(\xi(t)) = \sigma(1 + s_1 \zeta_-^\theta + s_2 \zeta_+^\theta)$。
   
@@ -87,18 +87,22 @@ P(B|A) \* P(A) = P(AB)
 
   系统描述方程可以简化成：$y = F \beta + \xi$，其中：
   
-  $F_\theta = 
+  $$F_\theta = 
  \begin{pmatrix}
  (\phi_-^\theta)_1 & (\zeta_-^\theta)_1 & (\zeta_+^\theta)_1 & (\phi_+^\theta)_1 \\
  \vdots  & \vdots  & \ddots & \vdots  \\
  (\phi_-^\theta)_n & (\zeta_-^\theta)_n & (\zeta_+^\theta)_n & (\phi_+^\theta)_n \\
- \end{pmatrix}$，$t \in [1, n]$ ，t是时间点，n为时间长度；
+ \end{pmatrix}$$
+ 
+ $t \in [1, n]$ ，t是时间点，n为时间长度；
  
   系统噪音为正态分布，所以对噪音的描述可以简化成：
  
   $\xi \sim \mathcal{N} (0, \sigma^2 \Omega)$，其中covariance matrix $\Omega$可以表示成：
   
-  $(\Omega_{\theta, s_1, s_2})_{ij} = \big( \big[ 1 + s_1 (\zeta_-^\theta)_j + s2 (\zeta_+^\theta)_j \big]^2 \big) \cdot \delta_{ij}$，其中$\delta_{ij}$为dirac delta。
+  $$(\Omega_{\theta, s_1, s_2})_{ij} = \big( \big[ 1 + s_1 (\zeta_-^\theta)_j + s2 (\zeta_+^\theta)_j \big]^2 \big) \cdot \delta_{ij}$$
+  
+  其中$\delta_{ij}$为dirac delta。
 
 **3. 似然方程：**
 
@@ -106,17 +110,21 @@ P(B|A) \* P(A) = P(AB)
   
   $y \sim \mathcal{N} (F \hat\beta, \sigma^2 \Omega)$ 并改写成似然方程（likelihood function）:
   
-  $\mathcal{L}(\beta, \sigma, s, \theta|y) = \frac{1}{(2 \pi \sigma^2)^\frac{n}{2} \sqrt{|\Omega|}} e^{-\frac{1}{2 \sigma^2}(y - F \beta)^T \Omega^{-1} (y - F \beta)}$
+  $$\mathcal{L}(\beta, \sigma, s, \theta|y) = \frac{1}{(2 \pi \sigma^2)^\frac{n}{2} \sqrt{|\Omega|}} e^{-\frac{1}{2 \sigma^2}(y - F \beta)^T \Omega^{-1} (y - F \beta)}$$
   
 **4. 求最大似然的表达：**
 
-  由于参数beta的定义，一定存在 $\beta^* = argmin_{\beta \in \mathbb{R}^3} (y - F \beta )^T \Omega{-1} (y - F \beta)$
+  由于参数beta的定义，一定存在 $\beta^{\*} = argmin_{\beta \in \mathbb{R}^3} (y - F \beta )^T \Omega{-1} (y - F \beta)$
  
-  使得似然方程最大：$\mathcal{L}(\beta, \sigma, s, \theta|y) = \frac{1}{(2 \pi \sigma^2)^\frac{n}{2} \sqrt{|\Omega|}} e^{-\frac{\mathcal{R}^2}{2 \sigma^2}} e^{\frac{1}{2 \sigma^2}(\beta - \beta^*)^T \Xi (\beta - \beta^*)}$
+  使得似然方程最大：
+  
+  $$\mathcal{L}(\beta, \sigma, s, \theta|y) =\frac{1}{(2 \pi \sigma^2)^\frac{n}{2} \sqrt{|\Omega|}} \exp(-\frac{\mathcal{R}^2}{2 \sigma^2}) \exp(\frac{1}{2 \sigma^2}(\beta - \beta^{\*})^T \Xi (\beta - \beta^{\*}))$$
  
   其中： $\Xi = F^T \Omega^{-1} F$，
  
- $\mathcal{R}^2$ 为残差：$ \mathcal{R}^2 = min_{\beta \in \mathbb{R}^3} (y - F \beta)^T \Omega^{-1} (y - F \beta)  = (y - F \beta^*)^T \Omega^{-1} (y - F \beta^*)$
+ $\mathcal{R}^2$ 为残差：
+ 
+ $$\mathcal{R}^2 = min_{\beta \in \mathbb{R}^3} (y - F \beta)^T \Omega^{-1} (y - F \beta)  = (y - F \beta^{\*})^T \Omega^{-1} (y - F \beta^{\*})$$
  
   另外还可以通过残差直接计算系统内部error的估算值 $\hat \sigma^2 = \frac{\mathcal{R}^2}{n + 1}$
  
@@ -160,7 +168,7 @@ P(B|A) \* P(A) = P(AB)
  
  将前几步得出的prior和$ \mathcal{L} $表达带入bayesian inference公式，得到：
   
-  $p(\beta, \sigma, \theta, s|y) \sim \mathcal{L}(\beta, \sigma, \theta, s|y) \cdot \frac{1}{\sigma}$
+  $$p(\beta, \sigma, \theta, s|y) \sim \mathcal{L}(\beta, \sigma, \theta, s|y) \cdot \frac{1}{\sigma}$$
   
   以此为基础，通过积分可以求得所有参数的后验分布。算法中用到的部分为：
   
@@ -268,7 +276,7 @@ om
 
 **4 求最大似然的表达：**
 
-计算$ \beta^*$, $\mathcal{R}^2$和$ \hat \sigma^2$的代码示例如下：
+计算$ \beta^{\*}$, $\mathcal{R}^2$和$ \hat \sigma^2$的代码示例如下：
 
 
 ```python
@@ -333,7 +341,7 @@ print(sigmaHat)
 
 蓝线为原始数据，黄线为转折点$\theta$的后验概率，绿线为$\beta$值。在黄线峰值，表示该点为转折点的概率最大。
 
-  ![alt_text](docs/nileChangePointResult.png)
+  ![alt_text](doc/nileChangePointResult.png)
 
 ## 算法性能：
 
@@ -379,15 +387,9 @@ Python中应用进程池，通过一个自定义的贝叶斯类在进程池中�
 
 在这两个库/API的基础上，有各种开源和闭源的更高层的矩阵计算库，增加了对于硬件和架构的考虑，对于特定的CPU结构也有计算过程的优化。
 
-![alt text](docs/BLAS.png)
- 
-[来源](https://blog.csdn.net/u013677156/article/details/77865405)
-
 以AOI项目为例，本地使用了intel MKL(math kernel library)，服务器使用了openBLAS。
 
 MKL的性能比openBLAS要[好很多](https://software.intel.com/en-us/articles/performance-comparison-of-openblas-and-intel-math-kernel-library-in-r )。
- 
-![alt text](docs/MKL_benchmark.png)
 
 环境变量OPENBLAS_NUM_THREADS或MKL_NUM_THREADS的设置：为了优化超大规模矩阵的运算效率，这两个库都默认调用多线程。在算法已经唤起所有CPU的情况下，如果算法的每个线程上又由numpy库调用MKL或openBLAS重复唤起多线程，会造成严重的资源竞争。如果算法的矩阵很小（例如小于100 X 100），会造成经过加速器“加速”的矩阵运算产生的overhead高于性能提升，形成极大的资源浪费。
 
